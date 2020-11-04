@@ -25,6 +25,7 @@ class App {
       .connect("mongodb://localhost:27017/guilder", {
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        useCreateIndex: true
       })
       .then(() => console.log("DB Connected!"))
       .catch((err) => {
