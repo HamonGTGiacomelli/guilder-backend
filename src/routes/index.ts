@@ -1,10 +1,12 @@
-import {Router} from 'express';
-import UserRoutes from './users';
+import { Router } from 'express';
+import RegisterRoutes from './register';
 import AuthRoutes from './authentication';
+import UserRoutes from './user';
 
 const routes = Router();
 
-UserRoutes(routes);
+RegisterRoutes(routes);
 AuthRoutes(routes);
+UserRoutes(routes);
 
 export default routes;

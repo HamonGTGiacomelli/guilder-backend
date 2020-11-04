@@ -2,24 +2,18 @@
 import { Router, Request, Response } from 'express';
 import UserController from '../controllers/UserController';
 import { UserInterface } from '../schemas/User';
+import AuthenticationController from '../controllers/AuthenticationController';
 
 const routes = Router();
-
-routes.get(
-  '/',
-  async (req: Request, res: Response): Promise<Response> => {
-    const users = await UserController.retrieveAll();
-    return res.send({ users });
-  }
-);
 
 routes.post(
   '/',
   async (req: Request<{}, {}, UserInterface>, res: Response): Promise<Response> => {
-    const user = req.body;
+    const requestedUser = req.body;
     try {
-      const result = await UserController.create(user);
-      return res.send(result);
+      const user = await UserController.create(requestedUser);
+      const token = AuthenticationController.generateToken(user.id);
+      return res.send({ user, token });
     } catch (err) {
       const ex: Error = err;
       res.send({ error: ex.message });
@@ -28,5 +22,5 @@ routes.post(
 );
 
 export default (router: Router): void => {
-  router.use('/users', routes);
+  router.use('/register', routes);
 };
