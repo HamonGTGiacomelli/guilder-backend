@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 class UserController {
   public async retrieveOne(userId: string): Promise<UserInterface> {
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId }).populate('characters');
     return user;
   }
 
