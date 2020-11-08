@@ -1,6 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { CharacterInterface } from './Character';
+import { RPGTableInterface } from './RPGTable';
 
 export interface UserInterface extends Document {
   userName: string;
@@ -8,6 +9,7 @@ export interface UserInterface extends Document {
   firstName: string;
   lastName: string;
   characters?: CharacterInterface[];
+  rpgTables?: RPGTableInterface[];
 }
 
 const UserSchema = new Schema(
@@ -24,6 +26,12 @@ const UserSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'Character',
+      },
+    ],
+    rpgTables: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'RPGTable',
       },
     ],
   },
