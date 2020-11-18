@@ -2,6 +2,10 @@ import RPGTable, { RPGTableInterface } from '../schemas/RPGTable';
 import User from '../schemas/User';
 
 class RPGTableController {
+  public async retrieveAll(): Promise<RPGTableInterface[]> {
+    return await RPGTable.find().populate('characters');
+  }
+
   public async create(userId: string, rpgTable: RPGTableInterface): Promise<RPGTableInterface> {
     rpgTable = await RPGTable.create({
       user: userId,
