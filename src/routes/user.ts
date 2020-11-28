@@ -14,7 +14,7 @@ routes.get(
   async (req: AuthenticatedRequest<{}, {}, UserInterface>, res: Response): Promise<Response> => {
     const { userId } = req.context;
     try {
-      const user = await UserController.retrieveOne(userId);
+      const user = await UserController.findById(userId);
       return res.send({ user });
     } catch (err) {
       const ex: Error = err;

@@ -7,6 +7,7 @@ export interface RPGTableInterface extends Document {
   name: string;
   description?: string;
   characters: CharacterInterface[];
+  elegibleCharacters: CharacterInterface[];
 }
 
 const RPGTableSchema = new Schema(
@@ -21,6 +22,10 @@ const RPGTableSchema = new Schema(
     },
     description: String,
     characters: {
+      type: Schema.Types.ObjectId,
+      ref: 'Character',
+    },
+    elegibleCharacters: {
       type: Schema.Types.ObjectId,
       ref: 'Character',
     },

@@ -1,15 +1,19 @@
 import Character, { CharacterInterface } from '../schemas/Character';
-import User, { UserInterface } from '../schemas/User';
+import User from '../schemas/User';
+import UserController from './UserController';
 
 class CharacterController {
-  public async create(userId: string, character: CharacterInterface): Promise<UserInterface> {
+  public async findById(characterId: string): Promise<CharacterInterface> {
+    return await Character.findOne({ _id: characterId });
+  }
+
+  public async create(userId: string, character: CharacterInterface): Promise<CharacterInterface> {
     character = await Character.create({
       user: userId,
       ...character,
     });
-    const user = await User.findOne({ _id: userId }).populate('characters');
-    user.characters.push(character);
-    return user.save();
+    UserController.addCharacter(userId, character);
+    return character;
   }
 
   public async update(userId: string, character: CharacterInterface): Promise<CharacterInterface> {
@@ -26,11 +30,7 @@ class CharacterController {
   }
 
   public async delete(userId: string, character: CharacterInterface): Promise<boolean> {
-    const user = await User.findOne({ _id: userId }).populate('characters');
-    user.characters = await user.characters.filter((item) => {
-      return item.id != character._id;
-    });
-    user.save();
+    await UserController.removeCharacter(userId, character);
     Character.deleteOne({ _id: character._id });
     return true;
   }
