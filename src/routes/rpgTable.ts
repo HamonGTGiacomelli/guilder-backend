@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Router, Response } from 'express';
 import { RPGTableInterface } from '../schemas/RPGTable';
-import validateTokenAuth from '../middlewares/validateTokenAuth';
+import { validateTokenAuth } from '../middlewares/validateTokenAuth';
 import { AuthenticatedRequest } from '../types';
 import RPGTableController from '../controllers/RPGTableController';
 

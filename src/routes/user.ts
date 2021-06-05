@@ -2,7 +2,7 @@
 import { Router, Response } from 'express';
 import UserController from '../controllers/UserController';
 import { UserInterface } from '../schemas/User';
-import validateTokenAuth from '../middlewares/validateTokenAuth';
+import { validateTokenAuth } from '../middlewares/validateTokenAuth';
 import { AuthenticatedRequest } from '../types';
 
 const routes = Router();

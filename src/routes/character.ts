@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Router, Response } from 'express';
 import { CharacterInterface } from '../schemas/Character';
-import validateTokenAuth from '../middlewares/validateTokenAuth';
+import { validateTokenAuth } from '../middlewares/validateTokenAuth';
 import { AuthenticatedRequest } from '../types';
 import CharacterController from '../controllers/CharacterController';
 
