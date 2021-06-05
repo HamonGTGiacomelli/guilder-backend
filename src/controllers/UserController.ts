@@ -9,12 +9,12 @@ class UserController {
     return user;
   }
 
-  public async findByUsername(userName: string): Promise<UserInterface> {
-    return await User.findOne({ userName });
+  public async findByUsername(username: string): Promise<UserInterface> {
+    return await User.findOne({ username });
   }
 
-  public async authenticate(userName: string, password: string): Promise<UserInterface> {
-    const user = await User.findOne({ userName }).select('+password');
+  public async authenticate(username: string, password: string): Promise<UserInterface> {
+    const user = await User.findOne({ username }).select('+password');
     if (!user) {
       throw new Error('User name not found!');
     }
@@ -28,7 +28,7 @@ class UserController {
   }
 
   public async create(user: UserInterface): Promise<UserInterface> {
-    const userAlreadyExists = await this.findByUsername(user.userName);
+    const userAlreadyExists = await this.findByUsername(user.username);
     if (userAlreadyExists) {
       throw new Error('User already exists!');
     }

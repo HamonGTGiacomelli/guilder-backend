@@ -4,7 +4,7 @@ import { CharacterInterface } from './Character';
 import { RPGTableInterface } from './RPGTable';
 
 export interface UserInterface extends Document {
-  userName: string;
+  username: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -14,7 +14,7 @@ export interface UserInterface extends Document {
 
 const UserSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
       required: true,
       unique: true,

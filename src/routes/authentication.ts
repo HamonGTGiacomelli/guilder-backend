@@ -8,9 +8,9 @@ const routes = Router();
 
 routes.post('/', async (req: Request<{}, {}, UserInterface>, res: Response) => {
   const user = req.body;
-  const { userName, password } = user;
+  const { username, password } = user;
   try {
-    const user = await UserController.authenticate(userName, password);
+    const user = await UserController.authenticate(username, password);
     const token = AuthenticationController.generateToken(user.id);
     res.send({ user, token });
   } catch (err) {
