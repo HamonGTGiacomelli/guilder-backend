@@ -8,8 +8,12 @@ class RPGTableController {
     return await RPGTable.find().populate('characters');
   }
 
+  public async retrieveAvailableTables(userId: string, except: RPGTableInterface[]): Promise<RPGTableInterface[]> {
+    return await RPGTable.find({ user: { $ne: userId }, _id: { $nin: except } }).populate('characters');
+  }
+
   public async findById(rpgTableId: string): Promise<RPGTableInterface> {
-    return await (await RPGTable.findOne({ _id: rpgTableId })).populated('elegibleCharacters');
+    return await RPGTable.findOne({ _id: rpgTableId });
   }
 
   public async create(userId: string, rpgTable: RPGTableInterface): Promise<RPGTableInterface> {
@@ -36,15 +40,41 @@ class RPGTableController {
 
   public async delete(userId: string, rpgTable: RPGTableInterface): Promise<boolean> {
     UserController.removeRPGTable(userId, rpgTable);
-    RPGTable.deleteOne({ _id: rpgTable._id });
-    return true;
+    const result = await RPGTable.deleteOne({ _id: rpgTable._id });
+    if (result.deletedCount > 0) {
+      return true;
+    }
+    return false;
   }
 
-  public async addCharacterToPendingList(rpgTableId: string, characterId: string): Promise<RPGTableInterface> {
-    const rpgTable = await this.findById(rpgTableId);
-    const character = await CharacterController.findById(characterId);
-    rpgTable.elegibleCharacters.push(character);
-    return await rpgTable.save();
+  public async acceptCharacter(userId: string, characterId: string, tableId: string): Promise<RPGTableInterface> {
+    const user = await User.findOne({ _id: userId });
+    const table = await this.findById(tableId);
+    const characterData = await CharacterController.findById(characterId);
+    return await RPGTable.updateOne(
+      {
+        _id: table._id,
+        user,
+      },
+      {
+        interestedCharacters: [characterData, ...table.interestedCharacters],
+      }
+    );
+  }
+
+  public async rejectCharacter(userId: string, characterId: string, tableId: string): Promise<RPGTableInterface> {
+    const user = await User.findOne({ _id: userId });
+    const table = await this.findById(tableId);
+    const characterData = await CharacterController.findById(characterId);
+    return await RPGTable.updateOne(
+      {
+        _id: table._id,
+        user,
+      },
+      {
+        rejectedCharacters: [characterData, ...table.rejectedCharacters],
+      }
+    );
   }
 }
 

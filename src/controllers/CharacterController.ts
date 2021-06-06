@@ -1,5 +1,7 @@
 import Character, { CharacterInterface } from '../schemas/Character';
+import { RPGTableInterface } from '../schemas/RPGTable';
 import User from '../schemas/User';
+import RPGTableController from './RPGTableController';
 import UserController from './UserController';
 
 class CharacterController {
@@ -18,21 +20,56 @@ class CharacterController {
 
   public async update(userId: string, character: CharacterInterface): Promise<CharacterInterface> {
     const user = await User.findOne({ _id: userId });
-    character = await Character.updateOne(
+    return await Character.updateOne(
       {
         _id: character._id,
         user,
       },
       { ...character }
     );
-
-    return character;
   }
 
   public async delete(userId: string, character: CharacterInterface): Promise<boolean> {
     await UserController.removeCharacter(userId, character);
-    Character.deleteOne({ _id: character._id });
-    return true;
+    const result = await Character.deleteOne({ _id: character._id });
+    if (result.deletedCount > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  public async acceptTable(userId: string, characterId: string, tableId: string): Promise<CharacterInterface> {
+    const user = await User.findOne({ _id: userId });
+    const table = await RPGTableController.findById(tableId);
+    const characterData = await Character.findById(characterId);
+    return await Character.updateOne(
+      {
+        _id: characterData._id,
+        user,
+      },
+      {
+        interestedTables: [table, ...characterData.interestedTables],
+      }
+    );
+  }
+
+  public async rejectTable(userId: string, characterId: string, tableId: string): Promise<CharacterInterface> {
+    const user = await User.findOne({ _id: userId });
+    const table = await RPGTableController.findById(tableId);
+    const characterData = await Character.findById(characterId);
+    return await Character.updateOne(
+      {
+        _id: characterData._id,
+        user,
+      },
+      {
+        rejectedTables: [table, ...characterData.rejectedTables],
+      }
+    );
+  }
+
+  public async retrieveAvailableCharacters(userId: string, except: CharacterInterface[]): Promise<CharacterInterface[]> {
+    return await Character.find({ user: { $ne: userId }, _id: { $nin: except } });
   }
 }
 
