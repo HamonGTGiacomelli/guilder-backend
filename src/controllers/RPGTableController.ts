@@ -8,10 +8,6 @@ class RPGTableController {
     return await RPGTable.find().populate('characters');
   }
 
-  public async retrieveAvailableTables(userId: string, except: RPGTableInterface[]): Promise<RPGTableInterface[]> {
-    return await RPGTable.find({ user: { $ne: userId }, _id: { $nin: except } }).populate('characters');
-  }
-
   public async findById(rpgTableId: string): Promise<RPGTableInterface> {
     return await RPGTable.findOne({ _id: rpgTableId });
   }
@@ -75,6 +71,10 @@ class RPGTableController {
         rejectedCharacters: [characterData, ...table.rejectedCharacters],
       }
     );
+  }
+
+  public async retrieveAvailableTables(userId: string, except: RPGTableInterface[]): Promise<RPGTableInterface[]> {
+    return await RPGTable.find({ user: { $ne: userId }, _id: { $nin: except } }).populate('characters');
   }
 }
 
