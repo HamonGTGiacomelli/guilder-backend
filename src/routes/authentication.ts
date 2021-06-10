@@ -7,6 +7,7 @@ import AuthenticationController from '../controllers/AuthenticationController';
 const routes = Router();
 
 routes.post('/', async (req: Request<{}, {}, UserInterface>, res: Response) => {
+  console.log('POST authentication');
   const user = req.body;
   const { username, password } = user;
   try {

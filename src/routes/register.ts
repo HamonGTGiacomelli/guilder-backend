@@ -11,6 +11,7 @@ routes.post(
   async (req: Request<{}, {}, UserInterface>, res: Response): Promise<Response> => {
     const requestedUser = req.body;
     try {
+      console.log('POST register');
       const user = await UserController.create(requestedUser);
       const token = AuthenticationController.generateToken(user.id);
       return res.send({ user, token });

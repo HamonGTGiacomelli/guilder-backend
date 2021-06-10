@@ -12,6 +12,7 @@ routes.use(validateTokenAuth);
 routes.get(
   '/',
   async (req: AuthenticatedRequest<{}, {}, UserInterface>, res: Response): Promise<Response> => {
+    console.log('GET user');
     const { userId } = req.context;
     try {
       const user = await UserController.findById(userId);

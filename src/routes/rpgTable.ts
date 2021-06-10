@@ -12,6 +12,7 @@ routes.use(validateTokenAuth);
 routes.post(
   '/',
   async (req: AuthenticatedRequest<{}, {}, RPGTableInterface>, res: Response): Promise<Response> => {
+    console.log('POST rpgTable');
     const { userId } = req.context;
     const rpgTableRequested = req.body;
 
@@ -24,6 +25,7 @@ routes.post(
 routes.delete(
   '/',
   async (req: AuthenticatedRequest<{}, {}, RPGTableInterface>, res: Response): Promise<Response> => {
+    console.log('DELETE rpgTable');
     const { userId } = req.context;
     const rpgTableRequested = req.body;
 
@@ -39,6 +41,7 @@ routes.delete(
 routes.put(
   '/',
   async (req: AuthenticatedRequest<{}, {}, RPGTableInterface>, res: Response): Promise<Response> => {
+    console.log('PUT rpgTable');
     const { userId } = req.context;
     const rpgTableRequested = req.body;
 

@@ -12,6 +12,7 @@ routes.use(validateTokenAuth);
 routes.post(
   '/',
   async (req: AuthenticatedRequest<{}, {}, CharacterInterface>, res: Response): Promise<Response> => {
+    console.log('POST character');
     const { userId } = req.context;
     const characterRequested = req.body;
 
@@ -24,6 +25,7 @@ routes.post(
 routes.delete(
   '/',
   async (req: AuthenticatedRequest<{}, {}, CharacterInterface>, res: Response): Promise<Response> => {
+    console.log('DELETE character');
     const { userId } = req.context;
     const characterRequested = req.body;
 
@@ -39,6 +41,7 @@ routes.delete(
 routes.put(
   '/',
   async (req: AuthenticatedRequest<{}, {}, CharacterInterface>, res: Response): Promise<Response> => {
+    console.log('PUT character');
     const { userId } = req.context;
     const characterRequested = req.body;
 
