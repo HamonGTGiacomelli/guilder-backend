@@ -1,5 +1,4 @@
 import Character, { CharacterInterface } from '../schemas/Character';
-import { RPGTableInterface } from '../schemas/RPGTable';
 import User from '../schemas/User';
 import RPGTableController from './RPGTableController';
 import UserController from './UserController';
