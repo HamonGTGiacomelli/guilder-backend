@@ -1,6 +1,6 @@
 import { CharacterInterface } from '../schemas/Character';
 import RPGTable, { RPGTableInterface } from '../schemas/RPGTable';
-import User, { UserInterface } from '../schemas/User';
+import User from '../schemas/User';
 import CharacterController from './CharacterController';
 import UserController from './UserController';
 
@@ -49,8 +49,8 @@ class RPGTableController {
     const table = await this.findById(tableId);
     const characterData = await CharacterController.findById(characterId);
     if (characterData.interestedTables.includes(tableId)) {
-      this.addCharacterToTable(user, characterData, table);
-      CharacterController.addTableToCharacter(user, characterData, table);
+      this.addCharacterToTable(characterData, table);
+      CharacterController.addTableToCharacter(characterData, table);
     } else {
       return await RPGTable.updateOne(
         {
@@ -83,15 +83,10 @@ class RPGTableController {
     return await RPGTable.find({ user: { $ne: userId }, _id: { $nin: except } }).populate('characters');
   }
 
-  public async addCharacterToTable(
-    user: UserInterface,
-    character: CharacterInterface,
-    table: RPGTableInterface
-  ): Promise<RPGTableInterface> {
+  public async addCharacterToTable(character: CharacterInterface, table: RPGTableInterface): Promise<RPGTableInterface> {
     return await RPGTable.updateOne(
       {
         _id: table._id,
-        user,
       },
       {
         characters: [character, ...table.characters],
