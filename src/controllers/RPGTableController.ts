@@ -1,5 +1,6 @@
+import { CharacterInterface } from '../schemas/Character';
 import RPGTable, { RPGTableInterface } from '../schemas/RPGTable';
-import User from '../schemas/User';
+import User, { UserInterface } from '../schemas/User';
 import CharacterController from './CharacterController';
 import UserController from './UserController';
 
@@ -47,15 +48,20 @@ class RPGTableController {
     const user = await User.findOne({ _id: userId });
     const table = await this.findById(tableId);
     const characterData = await CharacterController.findById(characterId);
-    return await RPGTable.updateOne(
-      {
-        _id: table._id,
-        user,
-      },
-      {
-        interestedCharacters: [characterData, ...table.interestedCharacters],
-      }
-    );
+    if (characterData.interestedTables.includes(tableId)) {
+      this.addCharacterToTable(user, characterData, table);
+      CharacterController.addTableToCharacter(user, characterData, table);
+    } else {
+      return await RPGTable.updateOne(
+        {
+          _id: table._id,
+          user,
+        },
+        {
+          interestedCharacters: [characterData, ...table.interestedCharacters],
+        }
+      );
+    }
   }
 
   public async rejectCharacter(userId: string, characterId: string, tableId: string): Promise<RPGTableInterface> {
@@ -75,6 +81,22 @@ class RPGTableController {
 
   public async retrieveAvailableTables(userId: string, except: RPGTableInterface[]): Promise<RPGTableInterface[]> {
     return await RPGTable.find({ user: { $ne: userId }, _id: { $nin: except } }).populate('characters');
+  }
+
+  public async addCharacterToTable(
+    user: UserInterface,
+    character: CharacterInterface,
+    table: RPGTableInterface
+  ): Promise<RPGTableInterface> {
+    return await RPGTable.updateOne(
+      {
+        _id: table._id,
+        user,
+      },
+      {
+        characters: [character, ...table.characters],
+      }
+    );
   }
 }
 

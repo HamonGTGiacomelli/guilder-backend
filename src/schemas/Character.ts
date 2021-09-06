@@ -7,9 +7,9 @@ export interface CharacterInterface extends Document {
   name: string;
   description?: string;
   background?: string;
-  table: RPGTableInterface;
-  interestedTables?: RPGTableInterface[];
-  rejectedTables?: RPGTableInterface[];
+  table: RPGTableInterface | string;
+  interestedTables?: (RPGTableInterface | string)[];
+  rejectedTables?: (RPGTableInterface | string)[];
 }
 
 const CharacterSchema = new Schema(
@@ -28,7 +28,6 @@ const CharacterSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'RPGTable',
     },
-
     interestedTables: [
       {
         type: Schema.Types.ObjectId,
