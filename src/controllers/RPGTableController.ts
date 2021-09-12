@@ -35,9 +35,9 @@ class RPGTableController {
     return rpgTable;
   }
 
-  public async delete(userId: string, rpgTable: RPGTableInterface): Promise<boolean> {
-    UserController.removeRPGTable(userId, rpgTable);
-    const result = await RPGTable.deleteOne({ _id: rpgTable._id });
+  public async delete(userId: string, rpgTableId: string): Promise<boolean> {
+    UserController.removeRPGTable(userId, rpgTableId);
+    const result = await RPGTable.deleteOne({ _id: rpgTableId });
     if (result.deletedCount > 0) {
       return true;
     }

@@ -23,13 +23,13 @@ routes.post(
 );
 
 routes.delete(
-  '/',
-  async (req: AuthenticatedRequest<{}, {}, CharacterInterface>, res: Response): Promise<Response> => {
+  '/:id',
+  async (req: AuthenticatedRequest<{ id: string }, {}, CharacterInterface>, res: Response): Promise<Response> => {
     console.log('DELETE character');
     const { userId } = req.context;
-    const characterRequested = req.body;
+    const { id: characterID } = req.params;
 
-    const result = await CharacterController.delete(userId, characterRequested);
+    const result = await CharacterController.delete(userId, characterID);
 
     if (result) {
       return res.send({ success: true });

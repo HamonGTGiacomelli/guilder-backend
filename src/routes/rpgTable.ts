@@ -23,13 +23,13 @@ routes.post(
 );
 
 routes.delete(
-  '/',
-  async (req: AuthenticatedRequest<{}, {}, RPGTableInterface>, res: Response): Promise<Response> => {
+  '/:id',
+  async (req: AuthenticatedRequest<{ id: string }, {}, RPGTableInterface>, res: Response): Promise<Response> => {
     console.log('DELETE rpgTable');
     const { userId } = req.context;
-    const rpgTableRequested = req.body;
+    const { id: tableId } = req.params;
 
-    const result = await RPGTableController.delete(userId, rpgTableRequested);
+    const result = await RPGTableController.delete(userId, tableId);
 
     if (result) {
       return res.send({ success: true });

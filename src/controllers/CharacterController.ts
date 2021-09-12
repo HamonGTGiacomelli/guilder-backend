@@ -29,9 +29,9 @@ class CharacterController {
     );
   }
 
-  public async delete(userId: string, character: CharacterInterface): Promise<boolean> {
-    await UserController.removeCharacter(userId, character);
-    const result = await Character.deleteOne({ _id: character._id });
+  public async delete(userId: string, characterId: string): Promise<boolean> {
+    await UserController.removeCharacter(userId, characterId);
+    const result = await Character.deleteOne({ _id: characterId });
     if (result.deletedCount > 0) {
       return true;
     }

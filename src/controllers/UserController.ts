@@ -64,10 +64,10 @@ class UserController {
     return await user.save();
   }
 
-  public async removeCharacter(userId: string, character: CharacterInterface): Promise<UserInterface> {
+  public async removeCharacter(userId: string, characterId: string): Promise<UserInterface> {
     const user = await User.findOne({ _id: userId }).populate('characters');
     user.characters = await user.characters.filter((item) => {
-      return item.id != character._id;
+      return item.id != characterId;
     });
     return await user.save();
   }
@@ -78,10 +78,10 @@ class UserController {
     return await user.save();
   }
 
-  public async removeRPGTable(userId: string, rpgTables: RPGTableInterface): Promise<UserInterface> {
+  public async removeRPGTable(userId: string, rpgTablesId: string): Promise<UserInterface> {
     const user = await User.findOne({ _id: userId }).populate('rpgTables');
     user.rpgTables = await user.rpgTables.filter((item) => {
-      return item.id != rpgTables._id;
+      return item.id != rpgTablesId;
     });
     return await user.save();
   }
