@@ -5,7 +5,28 @@ import { RPGTableInterface } from '../schemas/RPGTable';
 
 class UserController {
   public async findById(userId: string): Promise<UserInterface> {
-    const user = await User.findOne({ _id: userId }).populate('characters').populate('rpgTables');
+    const user = await User.findOne({ _id: userId }).populate([
+      {
+        path: 'characters',
+        model: 'Character',
+        populate: [
+          {
+            path: 'table',
+            model: 'RPGTable',
+          },
+        ],
+      },
+      {
+        path: 'rpgTables',
+        model: 'RPGTable',
+        populate: [
+          {
+            path: 'characters',
+            model: 'Character',
+          },
+        ],
+      },
+    ]);
     return user;
   }
 
