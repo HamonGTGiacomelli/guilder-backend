@@ -13,6 +13,12 @@ class UserController {
           {
             path: 'table',
             model: 'RPGTable',
+            populate: [
+              {
+                path: 'characters',
+                model: 'Character',
+              },
+            ],
           },
         ],
       },

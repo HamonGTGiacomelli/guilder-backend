@@ -29,7 +29,7 @@ class RPGTableController {
         _id: rpgTable._id,
         user,
       },
-      { ...rpgTable }
+      rpgTable
     );
 
     return rpgTable;
