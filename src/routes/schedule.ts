@@ -56,5 +56,5 @@ routes.post(
 );
 
 export default (router: Router): void => {
-  router.use('/schedular', routes);
+  router.use('/schedule', routes);
 };
