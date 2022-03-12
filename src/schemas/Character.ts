@@ -1,6 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
-import { RPGTableInterface, RPGTableSchemaName } from './RPGTable';
-import { UserInterface, UserSchemaName } from './User';
+import { RPGTableInterface } from './RPGTable';
+import { UserInterface } from './User';
 
 export interface CharacterInterface extends Document {
   user: UserInterface | string;
@@ -12,13 +12,11 @@ export interface CharacterInterface extends Document {
   rejectedTables?: (RPGTableInterface | string)[];
 }
 
-export const CharacterSchemaName = 'Character'
-
 const CharacterSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: UserSchemaName,
+      ref: 'User',
     },
     name: {
       type: String,
@@ -28,18 +26,18 @@ const CharacterSchema = new Schema(
     background: String,
     table: {
       type: Schema.Types.ObjectId,
-      ref: RPGTableSchemaName,
+      ref: 'RPGTable',
     },
     interestedTables: [
       {
         type: Schema.Types.ObjectId,
-        ref: RPGTableSchemaName,
+        ref: 'RPGTable',
       },
     ],
     rejectedTables: [
       {
         type: Schema.Types.ObjectId,
-        ref: RPGTableSchemaName,
+        ref: 'RPGTable',
       },
     ],
   },
@@ -48,4 +46,4 @@ const CharacterSchema = new Schema(
   }
 );
 
-export default model<CharacterInterface>(CharacterSchemaName, CharacterSchema);
+export default model<CharacterInterface>('Character', CharacterSchema);

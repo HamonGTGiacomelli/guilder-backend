@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
-import { CharacterInterface, CharacterSchemaName } from './Character';
-import { ScheduleInterface, ScheduleSchemaName } from './Schedule';
-import { UserInterface, UserSchemaName } from './User';
+import { CharacterInterface } from './Character';
+import { ScheduleInterface } from './Schedule';
+import { UserInterface } from './User';
 
 export interface RPGTableInterface extends Document {
   user: UserInterface | string;
@@ -14,13 +14,11 @@ export interface RPGTableInterface extends Document {
   rejectedCharacters: (CharacterInterface | string)[];
 }
 
-export const RPGTableSchemaName = 'RPGTable'
-
 const RPGTableSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: UserSchemaName,
+      ref: 'User',
     },
     name: {
       type: String,
@@ -31,25 +29,25 @@ const RPGTableSchema = new Schema(
     characters: [
       {
         type: Schema.Types.ObjectId,
-        ref: CharacterSchemaName,
+        ref: 'Character',
       },
     ],
     interestedCharacters: [
       {
         type: Schema.Types.ObjectId,
-        ref: CharacterSchemaName,
+        ref: 'Character',
       },
     ],
     rejectedCharacters: [
       {
         type: Schema.Types.ObjectId,
-        ref: CharacterSchemaName,
+        ref: 'Character',
       },
     ],
     schedules: [
       {
         type: Schema.Types.ObjectId,
-        ref: ScheduleSchemaName,
+        ref: 'Schedule',
       },
     ],
   },
@@ -58,4 +56,4 @@ const RPGTableSchema = new Schema(
   }
 );
 
-export default model<RPGTableInterface>(RPGTableSchemaName, RPGTableSchema);
+export default model<RPGTableInterface>('RPGTable', RPGTableSchema);

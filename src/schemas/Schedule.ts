@@ -1,13 +1,11 @@
 import { Document, model, Schema } from 'mongoose';
-import { CharacterInterface, CharacterSchemaName } from './Character';
+import { CharacterInterface } from './Character';
 
 export interface ScheduleInterface extends Document {
   date: string;
   accepted: (CharacterInterface | string)[];
   rejected: (CharacterInterface | string)[];
 }
-
-export const ScheduleSchemaName = 'Schedule'
 
 const ScheduleSchema = new Schema(
   {
@@ -18,13 +16,13 @@ const ScheduleSchema = new Schema(
     accepted: [
       {
         type: Schema.Types.ObjectId,
-        ref: CharacterSchemaName,
+        ref: 'Character',
       },
     ],
     rejected: [
       {
         type: Schema.Types.ObjectId,
-        ref: CharacterSchemaName,
+        ref: 'Character',
       },
     ],
   },
@@ -33,4 +31,4 @@ const ScheduleSchema = new Schema(
   }
 );
 
-export default model<ScheduleInterface>(ScheduleSchemaName, ScheduleSchema);
+export default model<ScheduleInterface>('Schedule', ScheduleSchema);
