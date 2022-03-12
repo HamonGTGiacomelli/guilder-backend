@@ -1,12 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
-import { CharacterInterface } from './Character';
-import { UserInterface } from './User';
-
-export interface ScheduleInterface extends Document {
-  date: string;
-  accepted: (CharacterInterface | string)[];
-  rejected: (CharacterInterface | string)[];
-}
+import { CharacterInterface, CharacterSchemaName } from './Character';
+import { ScheduleInterface, ScheduleSchemaName } from './Schedule';
+import { UserInterface, UserSchemaName } from './User';
 
 export interface RPGTableInterface extends Document {
   user: UserInterface | string;
@@ -19,11 +14,13 @@ export interface RPGTableInterface extends Document {
   rejectedCharacters: (CharacterInterface | string)[];
 }
 
+export const RPGTableSchemaName = 'RPGTable'
+
 const RPGTableSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: UserSchemaName,
     },
     name: {
       type: String,
@@ -34,39 +31,25 @@ const RPGTableSchema = new Schema(
     characters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Character',
+        ref: CharacterSchemaName,
       },
     ],
     interestedCharacters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Character',
+        ref: CharacterSchemaName,
       },
     ],
     rejectedCharacters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Character',
+        ref: CharacterSchemaName,
       },
     ],
     schedules: [
       {
-        date: {
-          type: String,
-          required: true,
-        },
-        accepted: [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Character',
-          },
-        ],
-        rejected: [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Character',
-          },
-        ],
+        type: Schema.Types.ObjectId,
+        ref: ScheduleSchemaName,
       },
     ],
   },
@@ -75,4 +58,4 @@ const RPGTableSchema = new Schema(
   }
 );
 
-export default model<RPGTableInterface>('RPGTable', RPGTableSchema);
+export default model<RPGTableInterface>(RPGTableSchemaName, RPGTableSchema);

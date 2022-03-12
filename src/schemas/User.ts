@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { CharacterInterface } from './Character';
-import { RPGTableInterface } from './RPGTable';
+import { CharacterInterface, CharacterSchemaName } from './Character';
+import { RPGTableInterface, RPGTableSchemaName } from './RPGTable';
 
 export interface UserInterface extends Document {
   username: string;
@@ -11,6 +11,8 @@ export interface UserInterface extends Document {
   characters?: CharacterInterface[];
   rpgTables?: RPGTableInterface[];
 }
+
+export const UserSchemaName = 'User';
 
 const UserSchema = new Schema(
   {
@@ -25,13 +27,13 @@ const UserSchema = new Schema(
     characters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Character',
+        ref: CharacterSchemaName,
       },
     ],
     rpgTables: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'RPGTable',
+        ref: RPGTableSchemaName,
       },
     ],
   },
@@ -48,4 +50,4 @@ UserSchema.pre<UserInterface>('save', async function (next) {
   next();
 });
 
-export default model<UserInterface>('User', UserSchema);
+export default model<UserInterface>(UserSchemaName, UserSchema);
