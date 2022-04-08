@@ -1,7 +1,9 @@
 import { CharacterInterface } from '../schemas/Character';
 import RPGTable, { RPGTableInterface } from '../schemas/RPGTable';
+import { ScheduleInterface } from '../schemas/Schedule';
 import User from '../schemas/User';
 import CharacterController from './CharacterController';
+import ScheduleController from './ScheduleController';
 import UserController from './UserController';
 
 class RPGTableController {
@@ -92,6 +94,17 @@ class RPGTableController {
         characters: [character, ...table.characters],
       }
     );
+  }
+
+  public async addSchedule(userId: string, tableId: string, schedule: ScheduleInterface): Promise<RPGTableInterface> {
+    const scheduleData = await ScheduleController.create(schedule);
+    return await RPGTable.findOneAndUpdate({ user: userId, _id: tableId }, { $push: { schedules: scheduleData } });
+  }
+
+  public async removeSchedule(userId: string, tableId: string, schedule: ScheduleInterface): Promise<RPGTableInterface> {
+    // TODO: validate if schedule belongs to the user before deleting
+    await ScheduleController.remove(schedule);
+    return await RPGTable.findOneAndUpdate({ user: userId, _id: tableId }, { $pull: { schedules: schedule._id } });
   }
 }
 

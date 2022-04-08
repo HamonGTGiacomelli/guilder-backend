@@ -5,6 +5,7 @@ import UserRoutes from './user';
 import CharacterRoutes from './character';
 import RPGTableRoutes from './rpgTable';
 import MatchRoutes from './match';
+import ScheduleRoutes from './schedule'
 
 const routes = Router();
 
@@ -14,5 +15,6 @@ UserRoutes(routes);
 CharacterRoutes(routes);
 RPGTableRoutes(routes);
 MatchRoutes(routes);
+ScheduleRoutes(routes);
 
 export default routes;

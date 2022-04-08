@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Router, Response } from 'express';
+import RPGTableController from '../controllers/RPGTableController';
 import { validateTokenAuth } from '../middlewares/validateTokenAuth';
 import { CharacterInterface } from '../schemas/Character';
 import { RPGTableInterface } from '../schemas/RPGTable';
@@ -11,23 +12,30 @@ const routes = Router();
 routes.use(validateTokenAuth);
 
 routes.post(
-  '/add',
+  '/',
   async (
     req: AuthenticatedRequest<{}, {}, { rpgTable: RPGTableInterface; schedule: ScheduleInterface }>,
     res: Response
   ): Promise<Response> => {
     console.log('GET add schedular');
+    const { userId } = req.context;
+    const { rpgTable, schedule } = req.body;
 
-    return res.send('TODO');
+    return res.send(await RPGTableController.addSchedule(userId, rpgTable._id, schedule));
   }
 );
 
-routes.post(
-  '/remove',
-  async (req: AuthenticatedRequest<{}, {}, ScheduleInterface>, res: Response): Promise<Response> => {
+routes.delete(
+  '/',
+  async (
+    req: AuthenticatedRequest<{}, {}, { rpgTable: RPGTableInterface; schedule: ScheduleInterface }>,
+    res: Response
+  ): Promise<Response> => {
     console.log('GET remove schedular');
+    const { userId } = req.context;
+    const { rpgTable, schedule } = req.body;
 
-    return res.send('TODO');
+    return res.send(await RPGTableController.removeSchedule(userId, rpgTable._id, schedule));
   }
 );
 
