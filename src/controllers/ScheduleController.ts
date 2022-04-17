@@ -12,6 +12,44 @@ class ScheduleController {
   async remove(schedule: ScheduleInterface) {
     return await Schedule.deleteOne({ _id: schedule._id });
   }
+
+  async accept(scheduleId: string, characterId?: string) {
+    if (characterId) {
+      return Schedule.updateOne(
+        { _id: scheduleId },
+        {
+          $push: {
+            accepted: characterId,
+          },
+        }
+      );
+    }
+    return Schedule.updateOne(
+      { _id: scheduleId },
+      {
+        isMasterAccepted: true,
+      }
+    );
+  }
+
+  async reject(scheduleId: string, characterId?: string) {
+    if (characterId) {
+      return Schedule.updateOne(
+        { _id: scheduleId },
+        {
+          $push: {
+            rejected: characterId,
+          },
+        }
+      );
+    }
+    return Schedule.updateOne(
+      { _id: scheduleId },
+      {
+        isMasterAccepted: false,
+      }
+    );
+  }
 }
 
 export default new ScheduleController();

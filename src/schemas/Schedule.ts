@@ -3,6 +3,7 @@ import { CharacterInterface } from './Character';
 
 export interface ScheduleInterface extends Document {
   date: string;
+  isMasterAccepted?: boolean;
   accepted: (CharacterInterface | string)[];
   rejected: (CharacterInterface | string)[];
 }
@@ -13,6 +14,7 @@ const ScheduleSchema = new Schema(
       type: String,
       required: true,
     },
+    isMasterAccepted: Boolean,
     accepted: [
       {
         type: Schema.Types.ObjectId,

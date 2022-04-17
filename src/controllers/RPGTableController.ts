@@ -96,15 +96,25 @@ class RPGTableController {
     );
   }
 
+  public async retrieveSchedules(userId: string, tableId: string) {
+    const rpgTable = await RPGTable.findOne({
+      _id: tableId,
+    }).populate('schedules');
+
+    const { schedules } = rpgTable;
+
+    return schedules;
+  }
+
   public async addSchedule(userId: string, tableId: string, schedule: ScheduleInterface): Promise<RPGTableInterface> {
     const scheduleData = await ScheduleController.create(schedule);
-    return await RPGTable.findOneAndUpdate({ user: userId, _id: tableId }, { $push: { schedules: scheduleData } });
+    return await RPGTable.updateOne({ user: userId, _id: tableId }, { $push: { schedules: scheduleData } });
   }
 
   public async removeSchedule(userId: string, tableId: string, schedule: ScheduleInterface): Promise<RPGTableInterface> {
     // TODO: validate if schedule belongs to the user before deleting
     await ScheduleController.remove(schedule);
-    return await RPGTable.findOneAndUpdate({ user: userId, _id: tableId }, { $pull: { schedules: schedule._id } });
+    return await RPGTable.updateOne({ user: userId, _id: tableId }, { $pull: { schedules: schedule._id } });
   }
 }
 
