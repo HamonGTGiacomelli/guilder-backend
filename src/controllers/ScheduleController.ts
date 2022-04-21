@@ -21,6 +21,9 @@ class ScheduleController {
           $push: {
             accepted: characterId,
           },
+          $pull: {
+            rejected: characterId,
+          },
         }
       );
     }
@@ -39,6 +42,9 @@ class ScheduleController {
         {
           $push: {
             rejected: characterId,
+          },
+          $pull: {
+            accepted: characterId,
           },
         }
       );
